@@ -1,0 +1,141 @@
+{% extends "layouts/master.html" %}
+
+{% block title %} Analisis {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<!-- awal isi halaman -->
+<div class="page-inner">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">{{title}}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <!-- meload package untuk merender form field -->
+                        {% load widget_tweaks %}
+                        <form action="" method="POST" id="compose-form" class="form-horizontal"
+                            enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <div class="form-group row">
+                                    <label class="col-sm-4">Content</label>
+                                    <div class="col-sm-8">
+                                        <textarea name="content" class="form-control"
+                                            placeholder="Masukkan teks di sini" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success btn-upload pull-right"><i class="fa fa-upload"></i> 
+                                    Upload File
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-simpan">Analisis</button>
+                            </div>
+                        </form>
+                        {% if sentiment %}
+                        <h2>Hasil Sentimen: {{ sentiment }}</h2>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- akhir isi halaman -->
+{% endblock content %}
+
+{% block modal %}
+
+<!-- ============ MODAL DATA =============== -->
+<div class="modal fade" id="compose" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><b>
+                        <h4 class="modal-title" id="exampleModalLabel">Tambah Data</h4>
+                    </b></center>
+            </div>
+
+            <!-- meload package untuk merender form field -->
+            {% load widget_tweaks %}
+            <form action="{% url 'analisis/upload_file' %}" method="POST" id="compose-form" class="form-horizontal" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-sm-4">File</label>
+                        <div class="col-sm-8">
+                            <input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="test_file" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary btn-simpan">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--- END MODAL DATA --->
+{% endblock modal %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block js %}
+
+<script>
+    $(function () {
+        table = $('#data-width').DataTable({
+            searching: false,
+            ajax: '{% url "media/json" %}',
+            columns: [
+                {
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'nama_media'
+                },
+                {
+                    data: 'id',
+                    className: 'text-center',
+                    orderable: false,
+                    searchable: false,
+                    render: function (data, type, row) {
+                        return '<button type="button" class="btn btn-success btn-edit" data-id="' + data + '"><i class="fa fa-edit"></i> </button>\
+                        <a class="btn btn-danger btn-hapus" data-id="' + data + '" data-handler="data" href="delete/' + data + '">\
+                        <i class="fa fa-trash"></i> </a> \
+					              <form id="delete-form-' + data + '-data" action="{% url "media" %}delete/' + data + '" method="GET" style="display: none;">\
+                        </form>'
+                    }
+                },
+            ]
+        });
+
+    });
+
+    //Button Trigger
+    $("body").on("click", ".btn-upload", function () {
+        kosongkan();
+        jQuery("#compose-form").attr("action", "{% url 'analisis/upload_file' %}");
+        jQuery("#compose .modal-title").html("Upload File");
+        jQuery("#compose").modal("toggle");
+    });
+
+    $("body").on("click", ".btn-simpan", function () {
+        Swal.fire(
+            'Data Disimpan!',
+            '',
+            'success'
+        )
+    });
+
+    function kosongkan() {
+        jQuery("#compose-form input[name=file]").val("");
+    }
+</script>
+{% endblock js %}
