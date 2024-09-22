@@ -1,0 +1,90 @@
+{% extends "layouts/master.html" %} {% block title %} Analisis {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+<!-- awal isi halaman -->
+<div class="page-inner">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <button class="btn btn-success btn-export pull-right" id="exportButton"><i class="fa fa-download"> </i> Download</button>
+          <h4 class="card-title">Hasil Prediksi Sentimen</h4>
+        </div>
+        <div class="card-header">
+          <h4 class="card-title" id="hasil_sentimen">Sentimen Positif : {{positif}}  Sentimen Negatif : {{negatif}}</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              id="data-width"
+              class="display table table-striped table-hover"
+              width="100%"
+              style="overflow-wrap: anywhere"
+            >
+              <thead>
+                <tr>
+                  <th width="20%" class="text-center">Akun</th>
+                  <th class="text-center">Komentar</th>
+                  <th width="10%" class="text-center">Sentimen</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                {% for row in hasil %}
+                <tr>
+                  <td>{{ row.akun }}</td>
+                  <td class="text-justify col-md-6">{{ row.text }}</td>
+                  <td>{{ row.predicted_sentiment }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- akhir isi halaman -->
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block js %}
+<script>
+  var tableId = 'data-width';
+  function exportTableToExcel(tableId) {
+    // Get the table element using the provided ID
+    const table = document.getElementById(tableId);
+
+    // Extract the HTML content of the table
+    const html = table.outerHTML;
+
+    // Create a Blob containing the HTML data with Excel MIME type
+    const blob = new Blob([html], { type: "application/vnd.ms-excel" });
+
+    // Create a URL for the Blob
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary anchor element for downloading
+    const a = document.createElement("a");
+    a.href = url;
+
+    // Set the desired filename for the downloaded file
+    a.download = "Hasil Prediksi Sentimen.xls";
+
+    // Simulate a click on the anchor to trigger download
+    a.click();
+
+    // Release the URL object to free up resources
+    URL.revokeObjectURL(url);
+  }
+
+  // Attach the function to the export button's click event
+  document
+    .getElementById("exportButton")
+    .addEventListener("click", function () {
+      exportTableToExcel("data-width");
+    });
+</script>
+{% endblock js %}

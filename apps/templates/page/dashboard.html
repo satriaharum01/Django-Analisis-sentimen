@@ -1,0 +1,132 @@
+{% extends "layouts/master.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<!-- awal isi halaman -->
+
+<div class="panel-header bg-success-gradient">
+    <div class="page-inner py-5">
+        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+            <div>
+                <h2 class="text-white pb-2 fw-bold">Home</h2>
+                <h5 class="text-white op-7 mb-2">Selamat Datang <i></i> di {{APP_DETAIL}}
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-inner mt--5">
+    <div class="row">
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center icon-success bubble-shadow-small">
+                                <i class="flaticon-interface-6"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category">Media</p>
+                                <h4 class="card-title">{{value.media}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                <i class="flaticon-chat"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category">Komentar</p>
+                                <h4 class="card-title">{{value.komentar}}</h4>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-round">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                <i class="flaticon-analytics"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category">Sentimen Positif</p>
+                                <h4 class="card-title">{{value.s_positif}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-round">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center icon-warning bubble-shadow-small">
+                                <i class="flaticon-analytics"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category">Sentimen Negatif</p>
+                                <h4 class="card-title">{{value.s_negatif}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">tentang kami</h4>
+
+                    </div>
+                    <div class="card-body">
+
+                        <p class="text-justify">{{APP_DETAIL}}</p>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- akhir isi halaman -->
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block custom_js %}{% endblock custom_js %}
